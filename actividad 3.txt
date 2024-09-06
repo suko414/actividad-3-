@@ -1,0 +1,135 @@
+# Función para calcular el promedio de una lista de calificaciones
+def calcular_promedio(calificaciones):
+    total = sum(calificaciones)  
+    cantidad = len(calificaciones)  
+    promedio = total / cantidad 
+    return promedio
+def mostrar_todos_los_alumnos(alumnos):
+    print("\nLista de Alumnos y sus Promedios:")
+    for alumno in alumnos:
+        nombre = alumno[0]
+        calificaciones = alumno[1]
+        promedio = calcular_promedio(calificaciones)
+        print(f"{nombre}: {promedio:.2f}") 
+
+def filtrar_alumnos_por_promedio(alumnos, umbral, condicion):
+    if condicion == "mayor":
+        print(f"\nAlumnos con promedio mayor o igual a {umbral}:")
+        for alumno in alumnos:
+            promedio = calcular_promedio(alumno[1])
+            if promedio >= umbral: 
+                print(f"{alumno[0]}: {promedio:.2f}")
+    elif condicion == "menor":
+        print(f"\nAlumnos con promedio menor a {umbral}:")
+        for alumno in alumnos:
+            promedio = calcular_promedio(alumno[1])
+            if promedio < umbral:  
+                print(f"{alumno[0]}: {promedio:.2f}")
+def main():
+    alumnos = []  
+    while True:
+        nombre = input("Ingresa el nombre del alumno (o 'salir' para terminar): ")
+        if nombre.lower() == 'salir': 
+            break
+        calificaciones = list(map(float, input(f"Ingrese las calificaciones de {nombre} separadas por espacio: ").split()))
+        alumnos.append((nombre, calificaciones)) 
+    mostrar_todos_los_alumnos(alumnos)
+    umbral_mayor = float(input("\nIngresa un promedio para mostrar los alumnos con promedio mayor o igual: "))
+    filtrar_alumnos_por_promedio(alumnos, umbral_mayor, "mayor")
+    umbral_menor = float(input("\nIngresa un promedio para mostrar los alumnos con promedio menor: "))
+    filtrar_alumnos_por_promedio(alumnos, umbral_menor, "menor")
+if __name__ == "__main__":
+    main()
+
+import random  # Importa el módulo para generar números aleatorios
+
+# Función que da una pista sobre si el intento es mayor o menor al número secreto
+def proporcionar_pista(numero_secreto, intento):
+    if intento < numero_secreto:
+        return "El número es mayor."
+    elif intento > numero_secreto:
+        return "El número es menor."
+    else:
+        return "¡Correcto!"
+
+# Programa principal del juego
+def juego_adivinanza():
+    numero_secreto = random.randint(1, 100)  
+    intentos_restantes = 5  
+    pistas = []  
+    print("¡Bienvenido al juego de adivinanzas! Adivina un número entre 1 y 100.")
+
+    while intentos_restantes > 0:  
+        intento = int(input(f"Te quedan {intentos_restantes} intentos. Ingresa tu número: "))
+        pista = proporcionar_pista(numero_secreto, intento)
+        pistas.append(pista)  
+
+        if pista == "¡Correcto!":
+            print("¡Felicidades! Adivinaste el número.")
+            break
+        else:
+            print(pista)
+            intentos_restantes -= 1 
+
+    if intentos_restantes == 0:
+        print(f"Lo siento, te quedaste sin intentos. El número era {numero_secreto}.")
+
+    print("\nResumen de tus intentos y pistas:")
+    for i, pista in enumerate(pistas, start=1):
+        print(f"Intento {i}: {pista}")
+
+if __name__ == "__main__":
+    juego_adivinanza()
+
+
+# Función para mostrar el inventario
+def mostrar_inventario(inventario):
+    print("\nInventario de productos:")
+    for producto in inventario:
+        nombre = producto[0]
+        cantidad = producto[1]
+        precio = producto[2]
+        print(f"Producto: {nombre}, Cantidad: {cantidad}, Precio: {precio}")
+
+# Función para calcular el valor total del inventario
+def valor_total_inventario(inventario):
+    total = 0
+    for producto in inventario:
+        total += producto[1] * producto[2]  
+    return total
+
+def gestion_inventario():
+    inventario = []  
+
+    while True:
+        print("\nOpciones: 1) Agregar producto 2) Actualizar cantidad 3) Mostrar inventario 4) Salir")
+        opcion = input("Selecciona una opción: ")
+
+        if opcion == "1":  
+            nombre = input("Ingresa el nombre del producto: ")
+            cantidad = int(input("Ingresa la cantidad: "))
+            precio = float(input("Ingresa el precio: "))
+            inventario.append((nombre, cantidad, precio))  
+
+        elif opcion == "2":  
+            nombre = input("Ingresa el nombre del producto para actualizar: ")
+            for i, producto in enumerate(inventario):
+                if producto[0] == nombre:
+                    nueva_cantidad = int(input(f"Cantidad actual de {nombre}: {producto[1]}. Ingresa la nueva cantidad: "))
+                    inventario[i] = (nombre, nueva_cantidad, producto[2]) 
+                    break
+            else:
+                print("Producto no encontrado.")
+
+        elif opcion == "3": 
+            mostrar_inventario(inventario)
+            print(f"Valor total del inventario: {valor_total_inventario(inventario):.2f}")
+
+        elif opcion == "4": 
+            break
+
+        else:
+            print("Opción inválida, intenta de nuevo.")
+
+if __name__ == "__main__":
+    gestion_inventario()
